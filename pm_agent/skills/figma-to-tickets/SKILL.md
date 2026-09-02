@@ -1,6 +1,6 @@
 ---
 name: figma-to-tickets
-description: Turn a Figma file, page, or frame into a batch of fully-specified Azure DevOps tickets, one per screen/component/pattern. Use when the user shares a Figma link, or asks to turn designs into tickets, a backlog, or a sprint's worth of work.
+description: Turn a Figma file, page, or frame into a batch of fully-specified Linear issues, one per screen/component/pattern. Use when the user shares a Figma link, or asks to turn designs into tickets, a backlog, or a sprint's worth of work.
 ---
 
 # figma-to-tickets
@@ -64,7 +64,7 @@ the user.
 
 ## Step 3: Check for existing tickets
 
-Before drafting anything new, check Azure DevOps for tickets that already cover
+Before drafting anything new, check Linear for issues that already cover
 a screen or component in scope, so the same design element never gets a
 duplicate ticket. Surface any matches to the user and ask whether to update the
 existing ticket instead of creating a new one.
@@ -101,8 +101,8 @@ Present the whole batch of drafted tickets together — not one at a time — so
 the user can review consistency across the set (naming, granularity, any
 missed overlap) before anything is created. Explicitly ask whether the batch
 needs changes; silence is not approval. Only after the user confirms the batch
-does pm-agent create or update the items in Azure DevOps, using the
-azure-devops MCP tools — never fabricate a ticket ID or claim an item was
+does pm-agent create or update the items in Linear, using the Linear MCP
+tools (`save_issue`) — never fabricate an issue ID or claim an item was
 created if the tool call didn't succeed.
 
 ### Step 5a: re-syncing after a design change
@@ -137,7 +137,7 @@ duplicates-avoided, and any granularity overlap that was flagged in Step 2.
 - Never invent frame content, copy, or behavior that isn't visible in what you
   were given — ask instead.
 - Never double-count a shared component across multiple screen tickets.
-- Never create or update anything in Azure DevOps before the batch-level human
+- Never create or update anything in Linear before the batch-level human
   confirmation in Step 5.
 - Always check for an existing ticket before drafting a new one for the same
   screen/component.

@@ -1,7 +1,7 @@
 {
   "name": "pm-agent",
-  "description": "AVH Contentful migration toolkit: an Azure DevOps work-item agent that turns Figma designs into fully-specified tickets, plus the drafting, triage, and estimation skills that support it.",
-  "version": "0.4.0",
+  "description": "AVH Contentful migration toolkit: a Linear issue agent that turns Figma designs into fully-specified tickets, plus the drafting, triage, and estimation skills that support it.",
+  "version": "0.5.0",
   "author": {
     "name": "Mapleton Hill"
   }

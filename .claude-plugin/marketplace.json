@@ -5,13 +5,13 @@
     "url": "https://github.com/cjones88a"
   },
   "metadata": {
-    "description": "AVH-specific fork of Mapleton Hill's pm-agent plugin, focused on Figma-driven Azure DevOps ticket creation."
+    "description": "AVH-specific fork of Mapleton Hill's pm-agent plugin, focused on Figma-driven Linear ticket creation."
   },
   "plugins": [
     {
       "name": "pm-agent",
       "source": "./pm_agent",
-      "description": "AVH Contentful migration toolkit: an Azure DevOps work-item agent focused on turning Figma designs into fully-specified tickets, plus drafting, triage, and estimation skills."
+      "description": "AVH Contentful migration toolkit: a Linear issue agent focused on turning Figma designs into fully-specified tickets, plus drafting, triage, and estimation skills."
     }
   ]
 }

@@ -1,8 +1,8 @@
 # pm-agent
 
-AVH Contentful migration toolkit for Claude Code — an Azure DevOps work-item
-agent centered on turning the Figma design file into a working backlog, plus a
-small set of supporting ticketing skills.
+AVH Contentful migration toolkit for Claude Code — a Linear issue agent
+centered on turning the Figma design file into a working backlog, plus a small
+set of supporting ticketing skills.
 
 > This is an AVH-specific fork of Mapleton Hill's general-purpose `pm-agent`.
 > It's scoped down to Figma-driven ticket creation for this engagement; the
@@ -15,7 +15,7 @@ small set of supporting ticketing skills.
 
 | Component | Type | What it does |
 |---|---|---|
-| `pm-agent` | agent | Orchestrates the skills below, end to end, and posts/updates the AVH Azure DevOps board. |
+| `pm-agent` | agent | Orchestrates the skills below, end to end, and posts/updates issues in the AVH Contentful project in Linear. |
 | `figma-to-tickets` | skill | The main entry point. Walks the AVH Figma file's pages/frames, confirms ticket granularity with you, and drafts one ticket per screen/component — grounded in what's actually in the design, never guessed. |
 | `review-current-site` | skill | Audits the live aspenvalleyhealth.org site page by page — content, components, third-party integrations — so migration tickets account for what has to survive the move, not just what's in the new design. |
 | `draft-ticket` | skill | Turns one slice or rough idea into a fully-specified story, interviewing you about the gaps first. |
@@ -43,7 +43,8 @@ pasted one, or sizing it.
   review-current-site: flags what's on the live page today that the Figma
   frame is missing (or vice versa) before tickets are drafted.
 
-  pm-agent posts & updates all of these in Azure DevOps (mapleton / AVH).
+  pm-agent posts & updates all of these in Linear (team Colt Jones / COL,
+  project AVH Contentful).
   triage-ticket grades any ticket pasted in from outside this flow.
 ```
 
@@ -53,57 +54,32 @@ on this page today" → `review-current-site`; a rough single idea →
 `estimate-ticket`. Just describe the goal and `pm-agent` routes to the right
 skill and offers the next one.
 
-## Setup: Azure DevOps token
+## Setup: connect Linear
 
-The bundled MCP server (`.mcp.json`) authenticates to Azure DevOps with a
-Personal Access Token (PAT). The token is **not** stored in this repo — it is
-read at runtime from the `AZURE_DEVOPS_PAT` environment variable, so every
-person supplies their own and no secret is ever committed.
+This plugin no longer bundles its own MCP server — it uses Linear's native
+connector instead, so there's no token to generate, scope, or store anywhere.
 
-### 1. Create the PAT
+### 1. Connect Linear
 
-In Azure DevOps: **User settings (top-right avatar) → Personal access tokens →
-New Token**, then set:
+In Claude Code or Cowork settings, find Connectors, then Linear, and connect
+it. That's a normal sign-in-and-approve flow in your browser, nothing to copy
+or paste.
 
-- **Organization:** `mapleton` (not "All accessible organizations").
-- **Expiration:** the shortest window that's practical — you'll rotate it when
-  it lapses rather than leaving a long-lived credential around.
+### 2. Confirm the workspace, team, and project
 
-### 2. Scope it to the minimum required
+This plugin assumes:
 
-Grant **only** the scope the agent needs to read, create, update, and delete
-tickets — nothing more. Do **not** use the "Full access" option.
+- **Workspace:** `colt-jones`
+- **Team:** `Colt Jones` (key `COL`)
+- **Project:** `AVH Contentful`
 
-- Under **Scopes**, choose **Custom defined**, then enable:
-  - **Work Items → Read, write, & manage**
+If any of these differ in your Linear account, update the names in
+`pm_agent/agents/pm-agent.md` to match, or just tell pm-agent the right
+team/project the first time you use it and it'll use that going forward for
+the session.
 
-That single scope covers all four operations the agent performs:
-
-| Operation | Covered by |
-|---|---|
-| Read tickets | Work Items · Read |
-| Create tickets | Work Items · Write |
-| Update tickets | Work Items · Write |
-| Delete tickets | Work Items · Manage |
-
-Because Azure DevOps bundles read + create + update + delete of work items into
-the single **Read, write, & manage** level, that is the *minimal* scope here —
-"Read & write" alone cannot delete, and anything broader (Code, Build, Release,
-Full access) grants access this agent must never have. Leave every other scope
-category unchecked.
-
-### 3. Store it as an environment variable
-
-```bash
-# Add to your shell profile (~/.zshrc, ~/.bashrc, etc.) — never commit this
-export AZURE_DEVOPS_PAT="<paste-your-PAT-here>"
-```
-
-Restart Claude Code after setting it so the MCP server picks up the token.
-
-> **Rotate on leak or expiry.** If a PAT is ever exposed, revoke it immediately
-> in the same Personal access tokens screen and issue a new one — a scoped,
-> expiring token limits the blast radius but does not eliminate it.
+That's the whole setup. No environment variables, no restart required beyond
+what connecting the app itself needs.
 
 ## Live site access
 
@@ -142,7 +118,7 @@ to ground their work in reality rather than guessing:
   from what it can actually read, not from assumption.
 
 Without a local checkout the tools still work — they just fall back to what you
-paste in, the Figma file, and Azure DevOps — but the results are weaker and more
+paste in, the Figma file, and Linear — but the results are weaker and more
 assumption-driven. Point the session at the codebase the ticket concerns
 whenever you can.
 
@@ -160,7 +136,7 @@ what you want. Typical triggers:
 | *"draft a story for X"* / *"write a ticket for…"* | `draft-ticket` | One fully-specified, implementable story |
 | *"triage this ticket"* (paste one) / *"is this ready?"* | `triage-ticket` | Verdict, element scorecard, and a sharpened rewrite |
 | *"estimate this"* / *"how long would this take?"* | `estimate-ticket` | Planning & Coding hours with rationale |
-| *"create this ticket in ADO"* / *"update #1509"* | `pm-agent` | The item posted/updated on the Azure DevOps board |
+| *"create this issue in Linear"* / *"update COL-42"* | `pm-agent` | The item posted/updated in Linear |
 
 `ticket-standards` isn't invoked directly — the drafting and triage skills apply
 it automatically as their quality bar.
@@ -181,7 +157,7 @@ checks with you.
 
 Every skill produces a **draft for you to review**, not a finished artifact, and
 there's a review checkpoint at the end of each stage. Nothing advances to the
-next stage — and nothing is written to Azure DevOps — until you confirm. Treat
+next stage — and nothing is written to Linear — until you confirm. Treat
 each hand-off as your cue to check the work and prompt for changes; silence is
 not approval.
 

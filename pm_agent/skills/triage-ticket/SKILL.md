@@ -111,5 +111,5 @@ The verdict and rewrite are a **draft for the human to review**.
 2. Explicitly ask the human to confirm or correct it — particularly any open
    questions you raised for the author, which only they can answer.
 3. Fold in their input and show the revised version.
-4. Only advance (estimate, or post/update in Azure DevOps via `pm-agent`) once the
+4. Only advance (estimate, or post/update in Linear via `pm-agent`) once the
    human confirms.

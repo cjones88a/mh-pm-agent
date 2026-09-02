@@ -15,7 +15,7 @@ shared Mapleton Hill `mh-agents` marketplace.
 
 | Plugin | Description |
 |---|---|
-| [`pm-agent`](./pm_agent) | AVH Contentful migration toolkit — an Azure DevOps work-item agent that turns Figma designs into fully-specified tickets, plus drafting/triage/estimation skills. |
+| [`pm-agent`](./pm_agent) | AVH Contentful migration toolkit — a Linear issue agent that turns Figma designs into fully-specified tickets, plus drafting/triage/estimation skills. |
 
 ## Install
 
@@ -24,8 +24,8 @@ shared Mapleton Hill `mh-agents` marketplace.
 /plugin install pm-agent@mh-pm-agent
 ```
 
-Then follow the plugin's own setup notes (`pm-agent` needs an
-`AZURE_DEVOPS_PAT` env var — see [pm_agent/README.md](./pm_agent/README.md)).
+Then follow the plugin's own setup notes (`pm-agent` needs Linear connected
+as a connector — see [pm_agent/README.md](./pm_agent/README.md)).
 
 ### Enable for a whole project automatically
 

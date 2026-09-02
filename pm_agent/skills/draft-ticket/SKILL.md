@@ -126,5 +126,5 @@ straight to the board.
 2. Explicitly ask whether anything needs changing — don't treat silence as
    approval.
 3. Fold in corrections and show the revised version.
-4. Only advance (triage, estimate, or post to Azure DevOps via `pm-agent`) once
+4. Only advance (triage, estimate, or post to Linear via `pm-agent`) once
    the human confirms.
