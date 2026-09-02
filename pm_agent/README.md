@@ -17,6 +17,7 @@ small set of supporting ticketing skills.
 |---|---|---|
 | `pm-agent` | agent | Orchestrates the skills below, end to end, and posts/updates the AVH Azure DevOps board. |
 | `figma-to-tickets` | skill | The main entry point. Walks the AVH Figma file's pages/frames, confirms ticket granularity with you, and drafts one ticket per screen/component — grounded in what's actually in the design, never guessed. |
+| `review-current-site` | skill | Audits the live aspenvalleyhealth.org site page by page — content, components, third-party integrations — so migration tickets account for what has to survive the move, not just what's in the new design. |
 | `draft-ticket` | skill | Turns one slice or rough idea into a fully-specified story, interviewing you about the gaps first. |
 | `triage-ticket` | skill | Grades an existing ticket for clarity/AI-readiness and rewrites it. |
 | `estimate-ticket` | skill | Estimates engineering hours, split into Planning & Coding buckets. |
@@ -24,26 +25,31 @@ small set of supporting ticketing skills.
 
 ## How the pieces fit together
 
-Figma is the source of truth. `figma-to-tickets` is the usual starting point;
-`draft-ticket`, `triage-ticket`, and `estimate-ticket` handle everything that
-happens to an individual ticket after that — refining one that needs more
-detail, grading a pasted one, or sizing it.
+Two sources of truth feed the backlog: the Figma designs (what the new site
+should be) and the live site (what has to survive the move). `figma-to-tickets`
+and `review-current-site` each ground tickets in one of those; `draft-ticket`,
+`triage-ticket`, and `estimate-ticket` handle everything that happens to an
+individual ticket after that — refining one that needs more detail, grading a
+pasted one, or sizing it.
 
 ```
-  (Figma file/frame) ─► figma-to-tickets ─► draft-ticket ─► estimate-ticket
-                            │  one ticket per     more detail    Planning +
-                            │  screen/component    on one ticket  Coding hours
-                            │
-                            └─ granularity (screen vs. component vs. both)
-                               confirmed with you before drafting, so shared
-                               components never get ticketed twice.
+  (Figma file/frame) ─► figma-to-tickets ─┐
+                                          ├─► draft-ticket ─► estimate-ticket
+  (live site page)   ─► review-current-site ┘   more detail    Planning +
+                                                 on one ticket  Coding hours
+
+  figma-to-tickets: one ticket per screen/component, granularity confirmed
+  with you first so shared components never get ticketed twice.
+  review-current-site: flags what's on the live page today that the Figma
+  frame is missing (or vice versa) before tickets are drafted.
 
   pm-agent posts & updates all of these in Azure DevOps (mapleton / AVH).
   triage-ticket grades any ticket pasted in from outside this flow.
 ```
 
-Entry points are flexible: a Figma link → `figma-to-tickets`; a rough single
-idea → `draft-ticket`; a pasted ticket → `triage-ticket`; "how long / how big" →
+Entry points are flexible: a Figma link → `figma-to-tickets`; "what's actually
+on this page today" → `review-current-site`; a rough single idea →
+`draft-ticket`; a pasted ticket → `triage-ticket`; "how long / how big" →
 `estimate-ticket`. Just describe the goal and `pm-agent` routes to the right
 skill and offers the next one.
 
@@ -99,6 +105,13 @@ Restart Claude Code after setting it so the MCP server picks up the token.
 > in the same Personal access tokens screen and issue a new one — a scoped,
 > expiring token limits the blast radius but does not eliminate it.
 
+## Live site access
+
+`review-current-site` reads aspenvalleyhealth.org directly (via WebFetch or
+whatever browsing tool is available in your session) every time it runs — it
+never answers from a cached memory of the site, since pages change. No setup
+is needed beyond normal internet access.
+
 ## Figma access
 
 `figma-to-tickets` reads the AVH design file directly if a Figma MCP tool or
@@ -143,6 +156,7 @@ what you want. Typical triggers:
 | Say something like… | Runs | You get |
 |---|---|---|
 | *"turn this Figma page into tickets"* / *"build the backlog from the designs"* | `figma-to-tickets` | A batch of tickets, one per screen/component, grounded in the Figma file |
+| *"what's actually on the current homepage?"* / *"audit the live site before we migrate this"* | `review-current-site` | A page-by-page inventory of the live site, plus gaps vs. the Figma design |
 | *"draft a story for X"* / *"write a ticket for…"* | `draft-ticket` | One fully-specified, implementable story |
 | *"triage this ticket"* (paste one) / *"is this ready?"* | `triage-ticket` | Verdict, element scorecard, and a sharpened rewrite |
 | *"estimate this"* / *"how long would this take?"* | `estimate-ticket` | Planning & Coding hours with rationale |
