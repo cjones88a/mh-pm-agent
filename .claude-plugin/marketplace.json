@@ -1,11 +1,11 @@
 {
-  "name": "mh-agents",
+  "name": "mh-pm-agent",
   "owner": {
-    "name": "Mapleton Hill",
-    "url": "https://github.com/mapletonhillmedia"
+    "name": "Colt Jones",
+    "url": "https://github.com/cjones88a"
   },
   "metadata": {
-    "description": "Mapleton Hill internal Claude Code plugins."
+    "description": "AVH-specific fork of Mapleton Hill's pm-agent plugin, focused on Figma-driven Azure DevOps ticket creation."
   },
   "plugins": [
     {

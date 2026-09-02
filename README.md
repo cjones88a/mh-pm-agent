@@ -1,14 +1,15 @@
-# MH-Agents
+# mh-pm-agent
 
-Mapleton Hill's internal [Claude Code plugin](https://docs.claude.com/en/docs/claude-code/plugins)
-marketplace. Private — installation is gated by GitHub access to this repo.
+A personal, AVH-specific fork of Mapleton Hill's internal
+[Claude Code plugin](https://docs.claude.com/en/docs/claude-code/plugins)
+marketplace. This is a one-off copy for the AVH Contentful migration, not the
+shared Mapleton Hill `mh-agents` marketplace.
 
-> **This local copy is specialized for the AVH Contentful migration.** The
-> `pm-agent` plugin here is scoped down to Figma-driven ticket creation for
-> that engagement; the general-purpose skills it started from (feature spec,
-> backlog prioritization, SOW docs, status updates, actuals reporting) were
-> moved to [`_archived-pm-agent-skills/`](./_archived-pm-agent-skills) rather
-> than deleted, in case another engagement needs the fuller pipeline.
+> The `pm-agent` plugin here is scoped down to Figma-driven ticket creation
+> for that engagement; the general-purpose skills it started from (feature
+> spec, backlog prioritization, SOW docs, status updates, actuals reporting)
+> were moved to [`_archived-pm-agent-skills/`](./_archived-pm-agent-skills)
+> rather than deleted, in case they're useful again later.
 
 ## Plugins
 
@@ -18,15 +19,12 @@ marketplace. Private — installation is gated by GitHub access to this repo.
 
 ## Install
 
-You need read access to this repo and working git auth for it (`gh auth login`,
-SSH, or a credential helper — if `git clone` of this repo works, so will this).
-
 ```
-/plugin marketplace add mapletonhillmedia/MH-Agents
-/plugin install pm-agent@mh-agents
+/plugin marketplace add cjones88a/mh-pm-agent
+/plugin install pm-agent@mh-pm-agent
 ```
 
-Then follow the plugin's own setup notes (e.g. `pm-agent` needs an
+Then follow the plugin's own setup notes (`pm-agent` needs an
 `AZURE_DEVOPS_PAT` env var — see [pm_agent/README.md](./pm_agent/README.md)).
 
 ### Enable for a whole project automatically
@@ -37,11 +35,11 @@ without running the commands above:
 ```json
 {
   "extraKnownMarketplaces": {
-    "mh-agents": {
-      "source": { "source": "github", "repo": "mapletonhillmedia/MH-Agents" }
+    "mh-pm-agent": {
+      "source": { "source": "github", "repo": "cjones88a/mh-pm-agent" }
     }
   },
-  "enabledPlugins": ["pm-agent@mh-agents"]
+  "enabledPlugins": ["pm-agent@mh-pm-agent"]
 }
 ```
 
