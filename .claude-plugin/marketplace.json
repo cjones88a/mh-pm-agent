@@ -1,0 +1,17 @@
+{
+  "name": "mh-agents",
+  "owner": {
+    "name": "Mapleton Hill",
+    "url": "https://github.com/mapletonhillmedia"
+  },
+  "metadata": {
+    "description": "Mapleton Hill internal Claude Code plugins."
+  },
+  "plugins": [
+    {
+      "name": "pm-agent",
+      "source": "./pm_agent",
+      "description": "AVH Contentful migration toolkit: an Azure DevOps work-item agent focused on turning Figma designs into fully-specified tickets, plus drafting, triage, and estimation skills."
+    }
+  ]
+}

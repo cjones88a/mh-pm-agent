@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "azure-devops": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@azure-devops/mcp",
+        "mapleton",
+        "--authentication",
+        "pat",
+        "-d",
+        "core",
+        "work",
+        "work-items"
+      ],
+      "env": {
+        "PERSONAL_ACCESS_TOKEN": "${AZURE_DEVOPS_PAT}"
+      }
+    }
+  }
+}
